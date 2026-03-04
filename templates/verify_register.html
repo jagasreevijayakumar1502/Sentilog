@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Smart Diary | Verify & Register</title>
+
+  <style>
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      color: #f1f1f1;
+      background: linear-gradient(135deg, #0f172a, #111827);
+      padding: 20px;
+    }
+
+    .box {
+      width: 380px;
+      max-width: 95vw;
+      padding: 32px;
+      border-radius: 16px;
+      background: rgba(16, 16, 16, 0.92);
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.55);
+    }
+
+    h2 {
+      text-align: center;
+      margin-top: 0;
+      margin-bottom: 16px;
+      letter-spacing: 0.4px;
+    }
+
+    .error {
+      color: #ffd2d2;
+      background: rgba(220, 53, 69, 0.16);
+      border: 1px solid rgba(220, 53, 69, 0.42);
+      border-radius: 10px;
+      padding: 10px;
+      margin-bottom: 12px;
+      font-size: 14px;
+    }
+
+    .box input {
+      width: 100%;
+      padding: 12px;
+      margin: 8px 0;
+      border-radius: 8px;
+      border: 1px solid #333;
+      box-sizing: border-box;
+      background: #1f1f1f;
+      color: #fff;
+    }
+
+    .box input:focus {
+      outline: none;
+      border-color: #00b894;
+      box-shadow: 0 0 0 2px rgba(0, 184, 148, 0.28);
+    }
+
+    .box button {
+      width: 100%;
+      margin-top: 10px;
+      padding: 12px;
+      border: none;
+      border-radius: 10px;
+      background: linear-gradient(90deg, #00b894, #0984e3);
+      color: white;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .note {
+      margin-top: 12px;
+      font-size: 13px;
+      color: #b8c2cc;
+      text-align: center;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="box">
+    <h2>Verify & Create Account</h2>
+
+    {% if error %}
+      <div class="error">{{ error }}</div>
+    {% endif %}
+
+    <form method="POST" action="{{ url_for('verify_register') }}">
+      <input type="email" name="email" value="{{ email }}" readonly>
+      <input type="text" name="otp" placeholder="Enter OTP" required>
+      <input type="text" name="username" placeholder="Choose Username" required>
+      <input type="password" name="password" placeholder="Create Password" required>
+      <button type="submit">Create Account</button>
+    </form>
+
+    <div class="note">OTP sent to your email. Valid for 10 minutes.</div>
+  </div>
+</body>
+</html>

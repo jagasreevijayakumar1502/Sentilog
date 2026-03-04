@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>OTP Verification</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: url("{{ url_for('static', filename='images/2.jpg') }}") center/cover no-repeat;
+      color: #f1f1f1;
+    }
+    .otp-box {
+      background: #000000;
+      padding: 30px 25px;
+      max-width: 400px;
+      width: 90%;
+      border-radius: 14px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.7);
+      text-align: center;
+    }
+    .otp-box h2 { margin-bottom: 15px; color: #fff; }
+    .otp-box p { margin: 10px 0; font-size: 15px; line-height: 1.5; color: #ccc; }
+    .otp-value {
+      display: inline-block;
+      padding: 8px 14px;
+      border-radius: 6px;
+      background: #222;
+      font-weight: bold;
+      font-size: 16px;
+      color: #fff;
+      margin: 8px 0;
+    }
+    .loading {
+      margin-top: 20px;
+      font-size: 14px;
+      color: #aaa;
+    }
+    .loading span { display: inline-block; animation: blink 1.5s infinite; }
+    @keyframes blink { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
+  </style>
+</head>
+<body>
+  <div class="otp-box">
+    <h2>OTP Verification</h2>
+    <p>Your OTP (for reference):</p>
+    <div class="otp-value">{{ otp }}</div>
+    <p>Please check your Telegram and select the correct option.</p>
+    <p class="loading">Waiting for OTP verification <span>...</span></p>
+  </div>
+  <script>
+    const username = "{{ username }}";
+    async function checkVerification() {
+      const response = await fetch(`/verify_status/${username}`);
+      const data = await response.json();
+      if (data.status === "verified") {
+        window.location.href = "/dashboard";
+      } else {
+        setTimeout(checkVerification, 1000);
+      }
+    }
+    checkVerification();
+  </script>
+</body>
+</html>

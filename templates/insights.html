@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Emotional Insights</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+    body {
+        margin: 0;
+        font-family: "Segoe UI", sans-serif;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        min-height: 100vh;
+        padding: 36px 20px;
+        background: url("{{ url_for('static', filename='images/3.jpg') }}") center/cover no-repeat fixed;
+        color: #f1f1f1;
+        position: relative;
+    }
+
+    body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.75);
+        z-index: 0;
+    }
+
+    .title,
+    .subtitle,
+    .chart-box,
+    .advice-box,
+    .back {
+        position: relative;
+        z-index: 1;
+    }
+
+    .title {
+        font-size: 32px;
+        font-weight: 700;
+        margin-bottom: 8px;
+        text-align: center;
+    }
+
+    .subtitle {
+        color: #c8d0d6;
+        font-size: 15px;
+        margin-bottom: 24px;
+        text-align: center;
+    }
+
+    .chart-box,
+    .advice-box {
+        width: min(1050px, 92vw);
+        background: rgba(20, 20, 20, 0.9);
+        border-radius: 16px;
+        padding: 22px;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+        margin-bottom: 24px;
+    }
+
+    .chart-area {
+        height: 300px;
+    }
+
+    .advice-title {
+        font-size: 20px;
+        font-weight: 700;
+        margin-bottom: 10px;
+        color: #ffd166;
+    }
+
+    .advice-text {
+        font-size: 16px;
+        line-height: 1.65;
+        color: #e3ebf2;
+    }
+
+    .back {
+        margin-top: 4px;
+        text-decoration: none;
+        font-weight: 600;
+        padding: 11px 20px;
+        border-radius: 10px;
+        background: linear-gradient(90deg, #00b894, #0984e3);
+        color: white;
+    }
+
+    .empty-state {
+        color: #b0bcc8;
+        font-size: 15px;
+        text-align: center;
+        padding: 12px 0;
+    }
+</style>
+</head>
+<body>
+    <div class="title">Monthly Emotional Insights</div>
+    <div class="subtitle">Mood trend based on your diary entries over time</div>
+
+    <div class="chart-box">
+        {% if mood_values and dates %}
+            <div class="chart-area">
+                <canvas id="moodChart"></canvas>
+            </div>
+        {% else %}
+            <div class="empty-state">No entries yet. Add diary entries to generate mood trend insights.</div>
+        {% endif %}
+    </div>
+
+    <div class="advice-box">
+        <div class="advice-title">Psychological Advice</div>
+        <div class="advice-text">{{ advice }}</div>
+    </div>
+
+    <a href="{{ url_for('diary') }}" class="back">Back to Diary</a>
+
+    {% if mood_values and dates %}
+    <script>
+        const dates = {{ dates|tojson }};
+        const moodValues = {{ mood_values|tojson }};
+        const ctx = document.getElementById("moodChart");
+
+        new Chart(ctx, {
+            type: "line",
+            data: {
+                labels: dates,
+                datasets: [{
+                    label: "Mood Trend",
+                    data: moodValues,
+                    fill: true,
+                    tension: 0.35,
+                    borderWidth: 3,
+                    borderColor: "#4fc3f7",
+                    backgroundColor: "rgba(79, 195, 247, 0.14)",
+                    pointRadius: 4,
+                    pointBackgroundColor: "#ffd166"
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        labels: { color: "#f1f1f1" }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const v = context.parsed.y;
+                                if (v === 1) return "Happy";
+                                if (v === -1) return "Sad";
+                                return "Neutral";
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        ticks: { color: "#c8d0d6" },
+                        grid: { color: "rgba(255,255,255,0.07)" }
+                    },
+                    y: {
+                        min: -1,
+                        max: 1,
+                        ticks: {
+                            stepSize: 1,
+                            color: "#c8d0d6",
+                            callback: function(value) {
+                                if (value === 1) return "Happy";
+                                if (value === 0) return "Neutral";
+                                if (value === -1) return "Sad";
+                                return value;
+                            }
+                        },
+                        grid: { color: "rgba(255,255,255,0.07)" }
+                    }
+                }
+            }
+        });
+    </script>
+    {% endif %}
+</body>
+</html>

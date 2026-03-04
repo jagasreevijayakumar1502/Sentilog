@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Smart Diary | Register</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            display: grid;
+            place-items: center;
+            background: url("{{ url_for('static', filename='images/2.jpg') }}") center/cover no-repeat fixed;
+            color: #f1f1f1;
+            position: relative;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.72);
+        }
+
+        .box {
+            position: relative;
+            z-index: 1;
+            width: 360px;
+            padding: 28px;
+            border-radius: 14px;
+            background: rgba(16, 16, 16, 0.9);
+            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.55);
+        }
+
+        h2 {
+            margin-top: 0;
+            margin-bottom: 16px;
+            text-align: center;
+            color: #ffffff;
+        }
+
+        .error {
+            color: #ffcf99;
+            background: rgba(255, 120, 0, 0.15);
+            border: 1px solid rgba(255, 159, 67, 0.4);
+            border-radius: 10px;
+            padding: 10px;
+            margin-bottom: 12px;
+            font-size: 14px;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0;
+            border-radius: 8px;
+            border: 1px solid #333;
+            background: #1f1f1f;
+            color: #fff;
+            box-sizing: border-box;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 8px;
+            border: none;
+            border-radius: 8px;
+            background: linear-gradient(90deg, #00b894, #0984e3);
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        a {
+            display: block;
+            margin-top: 12px;
+            text-align: center;
+            text-decoration: none;
+            color: #cde7ff;
+        }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <h2>Create Account</h2>
+
+        {% if error %}
+            <div class="error">{{ error }}</div>
+        {% endif %}
+
+        <form method="POST" action="{{ url_for('register') }}">
+            <input type="email" name="email" placeholder="Enter Gmail" required>
+            <button type="submit">Get OTP</button>
+        </form>
+
+        <a href="{{ url_for('login') }}">Already have an account? Login</a>
+    </div>
+</body>
+</html>

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>✅ Entry Saved</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #121212;
+      color: #eee;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      flex-direction: column;
+      text-align: center;
+    }
+
+    .card {
+      background: #1e1e1e;
+      padding: 40px 50px;
+      border-radius: 16px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.6);
+      max-width: 500px;
+      animation: fadeIn 1s ease-in-out;
+    }
+
+    .card i {
+      font-size: 50px;
+      color: #ffcc00;
+      margin-bottom: 20px;
+    }
+
+    .card h2 {
+      font-size: 28px;
+      margin-bottom: 15px;
+    }
+
+    .card p {
+      font-size: 16px;
+      margin-bottom: 15px;
+    }
+
+    .mood {
+      font-weight: bold;
+      color: #ffcc00;
+      font-size: 18px;
+      margin-bottom: 25px;
+    }
+
+    .card a {
+      display: inline-block;
+      padding: 12px 25px;
+      background: linear-gradient(90deg, #ffcc00, #e6b800);
+      color: #000;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+
+    .card a:hover {
+      background: linear-gradient(90deg, #e6b800, #ffcc00);
+      transform: scale(1.05);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <i class="fas fa-check-circle"></i>
+    <h2>Entry Saved Successfully!</h2>
+    <p>Your thoughts have been recorded.</p>
+    <div class="mood">Detected Mood: {{ mood }}</div>
+    <a href="{{ url_for('dashboard') }}">⬅ Back to Dashboard</a>
+  </div>
+</body>
+</html>

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My Diary Entries</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: "Segoe UI", sans-serif;
+            min-height: 100vh;
+            background: url("{{ url_for('static', filename='images/2.jpg') }}") center/cover no-repeat fixed;
+            position: relative;
+            color: #f1f1f1;
+            padding: 30px 20px 42px;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.74);
+            z-index: 0;
+        }
+
+        .content {
+            position: relative;
+            z-index: 1;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 28px;
+            font-size: 30px;
+            letter-spacing: 0.5px;
+        }
+
+        .entry-card {
+            background: rgba(20, 20, 20, 0.9);
+            max-width: 780px;
+            margin: 16px auto;
+            padding: 20px 24px;
+            border-radius: 16px;
+            box-shadow: 0 10px 24px rgba(0, 0, 0, 0.45);
+            position: relative;
+        }
+
+        .entry-text {
+            font-size: 16px;
+            line-height: 1.65;
+            white-space: pre-wrap;
+            margin-top: 10px;
+            color: #f2f5f7;
+        }
+
+        .entry-date {
+            font-size: 13px;
+            color: #a7b3be;
+            margin-top: 14px;
+        }
+
+        .mood-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            padding: 6px 12px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 700;
+            background: rgba(0, 184, 148, 0.2);
+            color: #8cf0dc;
+            border: 1px solid rgba(0, 184, 148, 0.4);
+        }
+
+        .actions {
+            text-align: center;
+            margin-top: 32px;
+        }
+
+        .btn {
+            display: inline-block;
+            margin: 10px;
+            padding: 11px 20px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .btn-dashboard {
+            background: linear-gradient(90deg, #f39c12, #e67e22);
+        }
+
+        .btn-insights {
+            background: linear-gradient(90deg, #00b894, #0984e3);
+        }
+
+        .no-entries {
+            text-align: center;
+            color: #c8d0d6;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <div class="content">
+        <h2>My Diary Entries</h2>
+
+        {% if entries %}
+            {% for entry in entries %}
+                <div class="entry-card">
+                    <div class="mood-badge">{{ entry.mood if entry.mood else "Mood: Not analysed" }}</div>
+                    <div class="entry-text">{{ entry.entry_text }}</div>
+                    <div class="entry-date">{{ entry.created_at }}</div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p class="no-entries">No entries yet. Write your first one.</p>
+        {% endif %}
+
+        <div class="actions">
+            <a class="btn btn-dashboard" href="{{ url_for('dashboard') }}">Back to Dashboard</a>
+            <a class="btn btn-insights" href="{{ url_for('insights') }}">View AI Insights</a>
+        </div>
+    </div>
+</body>
+</html>
